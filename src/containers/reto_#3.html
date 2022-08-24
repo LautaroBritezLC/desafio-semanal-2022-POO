@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reto3</title>
+
+
+</head>
+<body>  
+    <h1>reto 3</h1>
+    <h5>Escribe un programa que se encargue de comprobar si un número es o no primo. 
+        Hecho esto, imprime los números primos entre 1 y 100.</h5>
+
+    <script type="text/javascript">
+        function numeroPrimo(numero)
+        {   
+            if(numero < 2) {
+                return false
+            }
+            for(let i = 2; i<numero; i++){
+                //console.log(`${numero}/${i} = ${numero%i}`)
+                if(numero % i == 0){
+                    return false
+                    }
+                }
+                return true
+        }   
+        function monstrarPrimos(num) {
+
+            for(let i = 2; i<num; i++)  {  
+                if(numeroPrimo(i)) {
+                    document.write(i + "<br>");            
+                }       
+            }
+        }
+        monstrarPrimos(100)
+        </script>
+</body>
+</html>
