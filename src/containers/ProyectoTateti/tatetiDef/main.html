@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ta-te-ti vs Inteligencia Artificial</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit&family=Poppins:wght@300;700&family=Roboto+Condensed:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
+</head>
+
+<body>
+    <h3 style="text-align:center" id="titulo">TA-TE-TI vs Inteligencia Artificial</h3>
+    <div id="tabla">
+        <table>
+            <tr>
+                <td id="cuadrado0" onclick="celdaSeleccionada(0)"></td>
+                <td id="cuadrado1" onclick="celdaSeleccionada(1)"></td>
+                <td id="cuadrado2" onclick="celdaSeleccionada(2)"></td>
+            </tr>
+
+            <tr>
+                <td id="cuadrado3" onclick="celdaSeleccionada(3)"></td>
+                <td id="cuadrado4" onclick="celdaSeleccionada(4)"></td>
+                <td id="cuadrado5" onclick="celdaSeleccionada(5)"></td>
+            </tr>
+
+            <tr>
+                <td id="cuadrado6" onclick="celdaSeleccionada(6)"></td>
+                <td id="cuadrado7" onclick="celdaSeleccionada(7)"></td>
+                <td id="cuadrado8" onclick="celdaSeleccionada(8)"></td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+    <div id="contenedor">
+        <p>Es el turno del jugador: </p><input type="text" name="" id="txtJugador" value="A"></input>
+        <br><br>
+    </div>
+
+    <button onclick="location.reload()" id="actualizar">Actualizar Tablero</button>
+
+
+    <div id="contGanador">
+
+        <p id="ganador"> </p>
+
+    </div>
+
+    <br><br>
+    <input type='text' value='' id='txtvalor'></input>
+
+    <br><br>
+    <button onclick="cambiarSitio()" id="botonCambiarJuego">jugar con amigo</button>
+
+
+
+    <a href="http://localhost/tatetiHumano/main.html" id="irA" style="display: none;"></a>
+
+    <script>
+
+        function cambiarSitio() {
+            document.getElementById("irA").click();
+        }
+
+        async function juegaIA() {
+            var a1 = 0, a2 = 0, a3 = 0, a4 = 0, a5 = 0, a6 = 0, a7 = 0, a8 = 0, a9 = 0;
+
+            if (document.getElementById("cuadrado0").innerHTML != "") {
+                if (document.getElementById("cuadrado0").innerHTML == "X") {
+                    a1 = 1;
+                }
+                else {
+                    a1 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado1").innerHTML != "") {
+                if (document.getElementById("cuadrado1").innerHTML == "X") {
+                    a2 = 1;
+                }
+                else {
+                    a2 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado2").innerHTML != "") {
+                if (document.getElementById("cuadrado2").innerHTML == "X") {
+                    a3 = 1;
+                }
+                else {
+                    a3 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado3").innerHTML != "") {
+                if (document.getElementById("cuadrado3").innerHTML == "X") {
+                    a4 = 1;
+                }
+                else {
+                    a4 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado4").innerHTML != "") {
+                if (document.getElementById("cuadrado4").innerHTML == "X") {
+                    a5 = 1;
+                }
+                else {
+                    a5 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado5").innerHTML != "") {
+                if (document.getElementById("cuadrado5").innerHTML == "X") {
+                    a6 = 1;
+                }
+                else {
+                    a6 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado6").innerHTML != "") {
+                if (document.getElementById("cuadrado6").innerHTML == "X") {
+                    a7 = 1;
+                }
+                else {
+                    a7 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado7").innerHTML != "") {
+                if (document.getElementById("cuadrado7").innerHTML == "X") {
+                    a8 = 1;
+                }
+                else {
+                    a8 = -1;
+                }
+            }
+            if (document.getElementById("cuadrado8").innerHTML != "") {
+                if (document.getElementById("cuadrado8").innerHTML == "X") {
+                    a9 = 1;
+                }
+                else {
+                    a9 = -1;
+                }
+            }
+            const nada = await tf.ready().then(() => {
+                const modelPath = 'model/ttt_model.json' //pad donde tenemos todos los valores que se usaron para el aprendizaje
+
+                tf.tidy(() => {//limpia la memoria automaticamente de tensores exitentes 
+                    tf.loadLayersModel(modelPath).then((model) => { //lee las capas del modelo  (modelPath) y crea el modelo (model)
+                        /*const emptyBoard = tf.zeros([9])
+                        const betterBlockMe = tf.tensor([1, 1, 0, -1, 1, -1, 0, 0, -1])
+                        console.log("miTensor " + goForTheKill.print());
+                        // Apilar estados en una forma [3, 9]
+                        const matches = tf.stack([emptyBoard, betterBlockMe, goForTheKill])    
+                        const result = model.predict(matches) //
+                        // Registra resultados
+                        result.reshape([3, 3, 3]).print();*/
+                        //pepe = result2.reshape([9]).print();
+
+                        const goForTheKill = tf.tensor([a1, a2, a3, a4, a5, a6, a7, a8, a9]) //creamos el tensor a partir de los valores que retorna el tablero                           
+                        const matches2 = tf.stack([goForTheKill]) //agrupa el tensor
+                        const result2 = model.predict(matches2) // se hace la prediccion a partir del modelo seleccionado con los tensores juntados
+                        let wup = result2.dataSync() //devuelve los datos sincronicos (espera a que termine)                            
+                        console.log("Dentro " + wup);
+                        document.getElementById("txtvalor").value = wup;  //ponemos los valores en el input oculto para dps leerlos fuera de la funcion
+                        termino();
+
+                    })
+                })
+            })
+
+
+
+        }
+
+        function termino() {
+
+            var valores = document.getElementById("txtvalor").value; //guardamos los valores obtenidos
+            var a = valores.split(","), i; //separa los valores que estan unidos por ,
+            mayor = 0 //para obtener el mayor
+            posicion = 0 //para obtener la posicion del mayor
+            //ocupado = true;
+            for (i = 0; i < a.length; i++) { //recorremos el arreglo creado con split
+                let num = parseFloat(a[i]); //tranformamos en float corto
+                console.log("valores -- " + num); //mostramos
+                if (document.getElementById("cuadrado" + i).innerHTML == "")  //si esta vacia la casilla entonce verificamos...
+                {
+                    console.log("esta vacio el " + i); //posicion vacia
+                    if (mayor < num) //verificamos si el numero en esa posicion (que no se jugo) es mayor 
+                    {
+                        mayor = num; //almacenamos el mayor 
+                        posicion = i //alamacenamos la posicion para jugar
+                    }
+                }
+            }
+            console.log("tiene que jugar en: " + posicion + "   " + mayor); //mostramos en consola que posicion tiene que jugar
+            document.getElementById("cuadrado" + posicion).innerHTML = "O"; //ponemos el circulo en esa posicion
+            document.getElementById("txtJugador").innerHTML = "O";
+
+            if (ganador()) {
+                deshabilitarJuego();
+                document.getElementById("contGanador").style.display = "inherit";
+                document.getElementById("mostrarGanador").value = jugador;
+                document.getElementById("seguirJuegoDiv").style.display = "flex";
+                document.getElementById("contGanador").style.display = "inherit";
+
+
+            }
+        }
+
+        function celdaSeleccionada(numero) {
+
+            let sejugo = false;
+            let jugador = document.getElementById("txtJugador").value;
+            cuadrado = "cuadrado" + numero
+
+
+            if (document.getElementById(cuadrado).innerHTML != "") {
+                alert("ya se jugo en ese lugar");
+            }
+            else {
+                if (jugador == "A") {
+                    document.getElementById(cuadrado).innerHTML = "X";
+                    document.getElementById(cuadrado).style.color = "rgb(255, 0, 0)";
+                    sejugo = true;
+
+                }
+                else {
+                    document.getElementById(cuadrado).innerHTML = "O";
+                    document.getElementById(cuadrado).style.color = "rgb(222, 214, 0)";
+                    sejugo = true;
+
+
+                }
+            }
+
+            if (ganador()) {
+                deshabilitarJuego();
+                document.getElementById("contGanador").style.display = "inherit";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("mostrarGanador").value = jugador;
+                document.getElementById("seguirJuegoDiv").style.display = "flex";
+                document.getElementById("contGanador").style.display = "inherit";
+
+
+            } if (empate()) {
+                document.getElementById("contGanador").style.display = "inherit";
+                document.getElementById("ganador").innerHTML = "Hubo un empate";
+            }
+            else {
+                juegaIA();
+            }
+
+        }
+
+        function deshabilitarJuego() {
+            for (let numCuadrado = 0; numCuadrado <= 8; numCuadrado++) {
+                document.getElementById("cuadrado" + numCuadrado).removeAttribute("onclick");
+
+            }
+        }
+
+        function empate() {
+            contOcupado = 0
+            for (let numCuadrado = 0; numCuadrado <= 7; numCuadrado++) {
+                if (document.getElementById("cuadrado" + numCuadrado).innerHTML != "") {
+                    contOcupado = contOcupado + 1;
+                }
+
+                if (contOcupado == 8) {
+                    return true;
+                }
+            }
+        }
+
+        function ganador() {
+
+
+            //CASO HORIZONTAL redondo
+            if ((document.getElementById("cuadrado0").innerHTML == "O") && (document.getElementById("cuadrado1").innerHTML == "O") && (document.getElementById("cuadrado2").innerHTML == "O")) {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+
+                return true
+
+            }
+            if ((document.getElementById("cuadrado3").innerHTML == "O") && (document.getElementById("cuadrado4").innerHTML == "O") && (document.getElementById("cuadrado5").innerHTML == "O")) {
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+                return true
+            }
+            if ((document.getElementById("cuadrado6").innerHTML == "O") && (document.getElementById("cuadrado7").innerHTML == "O") && (document.getElementById("cuadrado8").innerHTML == "O")) {
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+                return true
+            }
+
+
+            //CASO Vertical redondo
+            if ((document.getElementById("cuadrado0").innerHTML == "O") && (document.getElementById("cuadrado3").innerHTML == "O") && (document.getElementById("cuadrado6").innerHTML == "O")) {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+                return true
+            }
+            if ((document.getElementById("cuadrado1").innerHTML == "O") && (document.getElementById("cuadrado4").innerHTML == "O") && (document.getElementById("cuadrado7").innerHTML == "O")) {
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+                return true
+            }
+            if ((document.getElementById("cuadrado2").innerHTML == "O") && (document.getElementById("cuadrado5").innerHTML == "O") && (document.getElementById("cuadrado8").innerHTML == "O")) {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+                return true
+            }
+
+
+            //CASO DIAGONALES redondo
+            if ((document.getElementById("cuadrado0").innerHTML == "O") && (document.getElementById("cuadrado4").innerHTML == "O") && (document.getElementById("cuadrado8").innerHTML == "O")) {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+                return true
+            }
+            if ((document.getElementById("cuadrado2").innerHTML == "O") && (document.getElementById("cuadrado4").innerHTML == "O") && (document.getElementById("cuadrado6").innerHTML == "O")) {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("contGanador").style.left = "500px";
+                document.getElementById("ganador").innerHTML = "El ganador es la Computadora";
+                return true
+            }
+
+            //*************** ahora la cruz ***********************************
+
+            //CASO HORIZONTAL cruz
+            if ((document.getElementById("cuadrado0").innerHTML == "X") && (document.getElementById("cuadrado1").innerHTML == "X") && (document.getElementById("cuadrado2").innerHTML == "X")) {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+
+            }
+            if ((document.getElementById("cuadrado3").innerHTML == "X") && (document.getElementById("cuadrado4").innerHTML == "X") && (document.getElementById("cuadrado5").innerHTML == "X")) {
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+
+            }
+            if ((document.getElementById("cuadrado6").innerHTML == "X") && (document.getElementById("cuadrado7").innerHTML == "X") && (document.getElementById("cuadrado8").innerHTML == "X")) {
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+
+            }
+
+            //CASO VERTICAL cruz
+            if ((document.getElementById("cuadrado0").innerHTML == "X") && (document.getElementById("cuadrado3").innerHTML == "X") && (document.getElementById("cuadrado6").innerHTML == "X")) {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+
+            }
+            if ((document.getElementById("cuadrado1").innerHTML == "X") && (document.getElementById("cuadrado4").innerHTML == "X") && (document.getElementById("cuadrado7").innerHTML == "X")) {
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+
+            }
+            if ((document.getElementById("cuadrado2").innerHTML == "X") && (document.getElementById("cuadrado5").innerHTML == "X") && (document.getElementById("cuadrado8").innerHTML == "X")) {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+
+            }
+
+            //CASO DIAGONALES cruz
+            if ((document.getElementById("cuadrado0").innerHTML == "X") && (document.getElementById("cuadrado4").innerHTML == "X") && (document.getElementById("cuadrado8").innerHTML == "X")) {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+            }
+            if ((document.getElementById("cuadrado2").innerHTML == "X") && (document.getElementById("cuadrado4").innerHTML == "X") && (document.getElementById("cuadrado6").innerHTML == "X")) {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("ganador").innerHTML = "Felicidades eres el Ganador!!";
+                return true
+            }
+
+
+            return false
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ta-te-ti</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital@1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilos.css" type="text/css">
+</head>
+<body>
+    <h3 style="text-align: center" id="titulo">TA-TE-TI</h3>
+    <div id="tabla">
+        <table>
+            <tr>
+                <td id="cuadrado0" onclick="celdaSeleccionada(0)"></td>
+                <td id="cuadrado1" onclick="celdaSeleccionada(1)" ></td>
+                <td id="cuadrado2" onclick="celdaSeleccionada(2)" ></td>
+            </tr>
+
+            <tr>
+                <td id="cuadrado3" onclick="celdaSeleccionada(3)" ></td>
+                <td id="cuadrado4" onclick="celdaSeleccionada(4)" ></td>
+                <td id="cuadrado5" onclick="celdaSeleccionada(5)" ></td>
+            </tr>
+
+            <tr>
+                <td id="cuadrado6" onclick="celdaSeleccionada(6)" ></td>
+                <td id="cuadrado7" onclick="celdaSeleccionada(7)" ></td>
+                <td id="cuadrado8" onclick="celdaSeleccionada(8)" ></td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+    <div id="contenedor">
+        <p>Es el turno del jugador: </p><input type="text" name="" id="txtJugador" value="A" disabled></input>
+        <br><br>
+    </div>
+
+    <div id="contGanador">
+        <p id="ganador"></p> 
+    </div>    
+
+    <button onclick="location.reload()" id="actualizar">Actualizar Tablero</button>
+
+
+    <br><br>
+    <button onclick="cambiarSitio()" id="botonCambiarJuego">jugar con Computadora</button>
+
+    <a href="http://localhost/tatetiDef/main.html" id="irA" style="display: none;"></a>
+
+     <script>
+
+        function cambiarSitio() {
+            document.getElementById("irA").click();
+        }
+
+        function celdaSeleccionada(numero) {
+
+            let sejugo = false;
+            let jugador = document.getElementById("txtJugador").value;
+            cuadrado = "cuadrado"+numero
+
+            
+            if (document.getElementById(cuadrado).innerHTML != ""){
+                alert("ya se jugo en ese lugar");
+            }
+            else {
+                if(jugador == "A") {
+                    document.getElementById(cuadrado).innerHTML = "X";
+                    document.getElementById(cuadrado).style.color = "rgb(255, 0, 0)";
+                    sejugo = true;
+
+                }
+                else {
+                    document.getElementById(cuadrado).innerHTML = "O";
+                    document.getElementById(cuadrado).style.color = "rgb(222, 214, 0)";
+                    sejugo = true;
+
+
+                }    
+            }
+
+            if (sejugo == true) {
+                if (jugador === "A") {
+                    document.getElementById("txtJugador").value = "B";
+
+                }
+                else {
+                    document.getElementById("txtJugador").value = "A";
+                }
+            }
+
+
+            if (ganador()){
+                deshabilitarJuego()
+                document.getElementById("contGanador").style.display = "inherit";
+                document.getElementById("ganador").innerHTML= `El jugador ${jugador} gano la partida!!`;
+                document.getElementById("seguirJuegoDiv").style.display = "flex";
+
+            }
+            if (empate()){
+                document.getElementById("contGanador").style.display = "inherit";
+                document.getElementById("contGanador").style.left = "610px"
+                document.getElementById("ganador").innerHTML = "Hubo un empate";    
+                deshabilitarJuego()            
+            }
+                    
+        }
+
+        function empate() {
+            contOcupado = 0
+            for (let numCuadrado = 0; numCuadrado <= 7; numCuadrado++) {
+                 if (document.getElementById("cuadrado"+ numCuadrado).innerHTML != "") {
+                    contOcupado= contOcupado + 1;
+                 }
+            
+            if (contOcupado == 8) {
+                return true;
+            }
+            }            
+        }
+
+
+
+        function deshabilitarJuego() {
+            for (let numCuadrado = 0; numCuadrado <= 8; numCuadrado++) {
+                document.getElementById("cuadrado"+ numCuadrado).removeAttribute("onclick");
+
+            }
+        }
+
+        function ganador()
+        {
+            //CASO HORIZONTAL redondo
+            if  ((document.getElementById("cuadrado0").innerHTML== "O") && (document.getElementById("cuadrado1").innerHTML== "O") && (document.getElementById("cuadrado2").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                return true
+
+            }
+            if  ((document.getElementById("cuadrado3").innerHTML== "O") && (document.getElementById("cuadrado4").innerHTML== "O") && (document.getElementById("cuadrado5").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                return true
+            }
+            if  ((document.getElementById("cuadrado6").innerHTML== "O") && (document.getElementById("cuadrado7").innerHTML== "O") && (document.getElementById("cuadrado8").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                return true
+            }
+
+
+
+             //CASO Vertical redondo
+             if  ((document.getElementById("cuadrado0").innerHTML== "O") && (document.getElementById("cuadrado3").innerHTML== "O") && (document.getElementById("cuadrado6").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                return true
+            }
+            if  ((document.getElementById("cuadrado1").innerHTML== "O") && (document.getElementById("cuadrado4").innerHTML== "O") && (document.getElementById("cuadrado7").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                return true
+            }
+            if  ((document.getElementById("cuadrado2").innerHTML== "O") && (document.getElementById("cuadrado5").innerHTML== "O") && (document.getElementById("cuadrado8").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                return true
+            }
+
+
+             //CASO DIAGONALES redondo
+             if  ((document.getElementById("cuadrado0").innerHTML== "O") && (document.getElementById("cuadrado4").innerHTML== "O") && (document.getElementById("cuadrado8").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                return true
+            }
+            if  ((document.getElementById("cuadrado2").innerHTML== "O") && (document.getElementById("cuadrado4").innerHTML== "O") && (document.getElementById("cuadrado6").innerHTML== "O"))
+            {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                return true
+            }
+
+            //*************** ahora la cruz ***********************************
+
+             //CASO HORIZONTAL cruz
+             if  ((document.getElementById("cuadrado0").innerHTML== "X") && (document.getElementById("cuadrado1").innerHTML== "X") && (document.getElementById("cuadrado2").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                return true
+
+            }
+            if  ((document.getElementById("cuadrado3").innerHTML== "X") && (document.getElementById("cuadrado4").innerHTML== "X") && (document.getElementById("cuadrado5").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                return true
+
+            }
+            if  ((document.getElementById("cuadrado6").innerHTML== "X") && (document.getElementById("cuadrado7").innerHTML== "X") && (document.getElementById("cuadrado8").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                return true
+
+            }
+
+            //CASO VERTICAL cruz
+            if  ((document.getElementById("cuadrado0").innerHTML== "X") && (document.getElementById("cuadrado3").innerHTML== "X") && (document.getElementById("cuadrado6").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado3").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                return true
+
+            }
+            if  ((document.getElementById("cuadrado1").innerHTML== "X") && (document.getElementById("cuadrado4").innerHTML== "X") && (document.getElementById("cuadrado7").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado1").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado7").style.backgroundColor = "blueviolet";
+                return true
+
+            }
+            if  ((document.getElementById("cuadrado2").innerHTML== "X") && (document.getElementById("cuadrado5").innerHTML== "X") && (document.getElementById("cuadrado8").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado5").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                return true
+
+            }
+
+            //CASO DIAGONALES cruz
+            if  ((document.getElementById("cuadrado0").innerHTML== "X") && (document.getElementById("cuadrado4").innerHTML== "X") && (document.getElementById("cuadrado8").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado0").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado8").style.backgroundColor = "blueviolet";
+                return true
+            }
+            if  ((document.getElementById("cuadrado2").innerHTML== "X") && (document.getElementById("cuadrado4").innerHTML== "X") && (document.getElementById("cuadrado6").innerHTML== "X"))
+            {
+                document.getElementById("cuadrado2").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado4").style.backgroundColor = "blueviolet";
+                document.getElementById("cuadrado6").style.backgroundColor = "blueviolet";
+                return true
+            }
+            return false
+
+        }
+
+
+     </script>
+
+</body>
+</html>
